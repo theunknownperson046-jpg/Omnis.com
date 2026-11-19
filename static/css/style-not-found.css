@@ -1,0 +1,13 @@
+.home-button {
+    display: inline-block;
+    background: #0284c7;
+    color: white;
+    text-decoration: none;
+    padding: 13px 25px;
+    border-radius: 8px;
+    transition: 0.2s;
+}
+
+.home-button:hover {
+    background: #0369a1;
+}
