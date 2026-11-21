@@ -2,6 +2,7 @@ from fastapi import FastAPI, Request
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import RedirectResponse
+from fastapi.responses import Response
 
 app = FastAPI(
     title="FastAPI Learning",
@@ -16,6 +17,10 @@ app.mount(
 )
 
 templates = Jinja2Templates(directory="templates")
+
+@app.head("/")
+async def home_head():
+    return Response(status_code=200)
 
 @app.get("/")
 async def home(request: Request):
