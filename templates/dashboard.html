@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+</head>
+<body>
+    {% if verified%}
+    <h2>Welcome, {{ login }}!</h2>
+    <H3>Balance: {{ Balance }}</H3>
+    <form action="/Transaction" method="post">
+    <label>Transaction</label><br>
+    <input
+        type="Number"
+        name="amount"
+        placeholder="1000"
+        required
+    >
+    <br><br>
+    <button type="submit">Check</button>
+    </form>
+    {% endif %}
+    {% if not verified %}
+    <h1>Illegal Access</h1>
+    <p style="color: red;">You are not authorized to access this page.</p>
+    {% endif %}
+</body> 

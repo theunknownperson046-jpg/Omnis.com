@@ -7,6 +7,28 @@
 </head>
 <body>
     <h1>{{ title }}</h1>
-    <p>Welcome to the FastAPI application!</p>
+    <p>Form</p>
+    <form action="/" method="post">
+    <label>Verify</label><br>
+    <input
+        type="text"
+        name="login"
+        placeholder="Red John"
+        required
+    >
+    <br>
+    <input
+        type="password"
+        name="password"
+        placeholder="password"
+        required
+    >
+    <br><br>
+    <button type="submit">Verify</button>
+    </form>
+    <br>
+    {% if not verified %}
+    <p style="color: red;">{{ error }}</p>
+    {% endif %}
 </body>
 </html>
