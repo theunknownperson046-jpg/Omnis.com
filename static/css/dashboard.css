@@ -1,0 +1,6 @@
+.top-right-btn {
+  position: fixed;
+  top: 20px;    /* Distance from the top edge */
+  right: 20px;  /* Distance from the right edge */
+  padding: 10px 20px;
+}

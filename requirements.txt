@@ -2,6 +2,4 @@ fastapi
 uvicorn[standard]
 jinja2
 pydantic
-itsdangerous
 python-multipart
-python-dotenv

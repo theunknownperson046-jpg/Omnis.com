@@ -24,14 +24,18 @@ app.add_middleware(
 )
 
 uid = {
-    "admin": "password"
+    "admin": "password",
+    "test": "test123"
+}
+
+bal = {
+    "admin": 1000.0,
+    "test": 500.0
 }
 
 USERNAME = os.getenv("APP_USERNAME")
 PASSWORD = os.getenv("APP_PASSWORD")
 VERIFY = os.getenv("VERIFY")
-
-balance = 1000.0  
 
 app.mount(
     "/static",
@@ -69,18 +73,21 @@ async def dashboard(request: Request):
     return templates.TemplateResponse(
         request=request,
         name="dashboard.html",
-        context={"verified": True, "title": "FastAPI Application", "login": USERNAME, "Balance": "$" + str(balance)}
+        context={"verified": True, "title": "FastAPI Application", "login": request.session.get("APP_USERNAME"), "Balance": "$" + str(bal[request.session.get("APP_USERNAME")])}
     )
-'''
-@app.post("/Transaction")
-async def transaction(request: Request, amount: float = Form(...)):
-    global balance
-    balance += amount
-    pass
-'''
+
+@app.post("/trans")
+async def transaction(request: Request, amount: float = Form(...), to: str = Form(...)):
+    username = request.session.get("APP_USERNAME")
+    if username in bal and to in bal and bal[username] >= amount:
+        bal[username] -= amount
+        bal[to] += amount
+    return RedirectResponse(url="/dashboard", status_code=303)
+
 @app.post("/")
 async def login_user(request: Request, login: str = Form(...), password: str = Form(...)):
     if login in uid and password == uid[login]:
+        request.session["APP_USERNAME"] = login
         request.session["VERIFY"] = True
         return RedirectResponse(url="/dashboard", status_code=302)
     else:
@@ -90,7 +97,10 @@ async def login_user(request: Request, login: str = Form(...), password: str = F
             context={"title": "FastAPI Application", "error": "Invalid username or password!"}
         )
 
-
+@app.post("/logout")
+async def logout(request: Request):
+    request.session.clear()
+    return RedirectResponse(url="/", status_code=303)
 
 @app.get("/api/status")
 async def status():
